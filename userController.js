@@ -34,9 +34,14 @@ const signout = (req, res) => {
 
   // Check if the user exists in the session
   if (sessions[userId]) {
+    // Set the token expiration to the current time
+    sessions[userId].expiration = Date.now() + 1000; // 1 second expiration
+
     // Remove the token from the session
     delete sessions[userId];
-    res.json({ message: "User signed out successfully." });
+
+    // Send a response to the client indicating that the token is no longer valid
+    res.json({ message: "User signed out successfully. Token invalidated." });
   } else {
     res.status(404).json({ message: "User not found in the session." });
   }
@@ -52,13 +57,10 @@ const seeUserData = (req, res) => {
   const { token } = req.headers;
   const { userId } = req.params;
 
-  // Verify the token
   try {
     const decoded = jwt.verify(token, secretKey);
 
-    // Check if decoded.userId matches the userId from the request parameters
     if (String(decoded.userId) === userId) {
-      // Find user data based on userId
       const user = userData.find((u) => u.userId === userId);
       if (user) {
         res.json(user);
@@ -66,12 +68,10 @@ const seeUserData = (req, res) => {
         res.status(404).json({ message: "User not found." });
       }
     } else {
-      // If userId does not match, return both Token Expired and Invalid Token
       res.status(401).json({ message: "Invalid Token" });
     }
   } catch (error) {
-    // If an error occurs during token verification, return both Token Expired and Invalid Token
-    res.status(401).json({ message: "Token Expired" });
+    res.status(401).json({ message: "Token Expired or Invalid Token" });
   }
 };
 
