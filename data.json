@@ -1,0 +1,22 @@
+[
+  {
+    "userId": "sumitk",
+    "email": "sumitk@cdac.in"
+  },
+  {
+    "userId": "Anuj",
+    "email": "anuj@example.com"
+  },
+  {
+    "userId": "raju",
+    "email": "raju@example.com"
+  },
+  {
+    "userId": "testuser",
+    "email": "test.user@example.com"
+  },
+  {
+    "userId": "demouser",
+    "email": "demo.user@example.com"
+  }
+]
