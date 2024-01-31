@@ -8,7 +8,7 @@ function generateToken(userId) {
 function verifyToken(req, res, next) {
   const { token } = req.headers;
   if (!token) {
-    console.error("Missing token");
+    console.error("Missing token.");
     return res.status(401).send("Missing token");
   }
 
