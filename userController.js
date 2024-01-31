@@ -35,16 +35,23 @@ const signout = (req, res) => {
   if (sessions[userId]) {
     // Add the token to the blacklistToken
     const tokenToAdd = sessions[userId].token;
-    blacklistToken.push(tokenToAdd);
-
-    // Set the token expiration to the current time
-    sessions[userId].expiration = Date.now() + 1000; // 1 second expiration
+    const expirationTime = Date.now() + 30 * 1000; // 30 seconds [1 * 60 * 1000 = 30min]
+    blacklistToken.push({ token: tokenToAdd, expiration: expirationTime });    
 
     // Remove the token from the session
     delete sessions[userId];
 
     // Log the token added to the blacklist
     console.log(`Token added to the blacklist: ${tokenToAdd}`);
+
+    // Set a timer to automatically remove the token from the blacklist after 30 minutes
+    setTimeout(() => {
+      const indexToRemove = blacklistToken.findIndex((entry) => entry.token === tokenToAdd);
+      if (indexToRemove !== -1) {
+        blacklistToken.splice(indexToRemove, 1);
+        console.log(`Token expired and removed from the blacklist: ${tokenToAdd}`);
+      }
+    }, 30 * 1000);
 
     // Send a response to the client indicating that the token is no longer valid
     res.json({ message: "User signed out successfully. Token invalidated." });
@@ -53,10 +60,14 @@ const signout = (req, res) => {
   }
 };
 
-
 // All Token see
 const allToken = (req, res) => {
   res.json({ sessions });
+};
+
+// All Token see
+const allBlacklistToken = (req, res) => {
+  res.json({ blacklistToken });
 };
 
 // See User Data
@@ -81,4 +92,5 @@ module.exports = {
   signout,
   allToken,
   seeUserData,
+  allBlacklistToken,
 };

@@ -6,6 +6,7 @@ const { verifyToken } = require("./verifyUser");
 router.post("/signin", userController.signin);
 router.post("/signout", userController.signout);
 router.get("/allToken", userController.allToken);
+router.get("/allBlacklistToken", userController.allBlacklistToken);
 router.get("/seeUserData/:userId", verifyToken, userController.seeUserData);
 
 module.exports = router;
