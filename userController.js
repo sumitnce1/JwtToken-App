@@ -1,6 +1,5 @@
-const jwt = require("jsonwebtoken");
-const { secretKey } = require("./config");
 const { generateToken } = require("./verifyUser");
+const { blacklistToken } = require("./blacklist");
 
 // In-memory session storage
 const sessions = {};
@@ -34,11 +33,18 @@ const signout = (req, res) => {
 
   // Check if the user exists in the session
   if (sessions[userId]) {
+    // Add the token to the blacklistToken
+    const tokenToAdd = sessions[userId].token;
+    blacklistToken.push(tokenToAdd);
+
     // Set the token expiration to the current time
     sessions[userId].expiration = Date.now() + 1000; // 1 second expiration
 
     // Remove the token from the session
     delete sessions[userId];
+
+    // Log the token added to the blacklist
+    console.log(`Token added to the blacklist: ${tokenToAdd}`);
 
     // Send a response to the client indicating that the token is no longer valid
     res.json({ message: "User signed out successfully. Token invalidated." });
@@ -47,6 +53,7 @@ const signout = (req, res) => {
   }
 };
 
+
 // All Token see
 const allToken = (req, res) => {
   res.json({ sessions });
@@ -54,21 +61,15 @@ const allToken = (req, res) => {
 
 // See User Data
 const seeUserData = (req, res) => {
-  const { token } = req.headers;
   const { userId } = req.params;
 
   try {
-    const decoded = jwt.verify(token, secretKey);
+    const user = userData.find((u) => u.userId === userId);
 
-    if (String(decoded.userId) === userId) {
-      const user = userData.find((u) => u.userId === userId);
-      if (user) {
-        res.json(user);
-      } else {
-        res.status(404).json({ message: "User not found." });
-      }
+    if (user) {
+      res.json(user);
     } else {
-      res.status(401).json({ message: "Invalid Token" });
+      res.status(404).json({ message: "User not found." });
     }
   } catch (error) {
     res.status(401).json({ message: "Token Expired or Invalid Token" });
