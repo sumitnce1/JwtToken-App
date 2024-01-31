@@ -3,7 +3,7 @@ const { secretKey } = require("./config");
 const { blacklistToken } = require("./blacklist");
 
 function generateToken(userId) {
-  return jwt.sign({ userId }, secretKey, { expiresIn: "1m" });
+  return jwt.sign({ userId }, secretKey, { expiresIn: "30m" });
 }
 
 function verifyToken(req, res, next) {
@@ -12,13 +12,12 @@ function verifyToken(req, res, next) {
     console.error("Missing token.");
     return res.status(401).send("Missing token");
   }
-  console.log("header se aaya token:", token);
-  console.log("blacklist se aaya token:", blacklistToken);
 
   // Check if the token is in the blacklistToken
-  if (blacklistToken.includes(token)) {
-    console.log("Token in blacklist.");
-    console.log("Blacklisted Tokens:", blacklistToken); // Log the current blacklistToken array
+  const tokenInBlacklist = blacklistToken.some(entry => entry.token === token);
+
+  if (tokenInBlacklist) {
+    console.log("Token in blacklist:", blacklistToken);
     return res.status(401).json({ message: "Invalid token." });
   }
 

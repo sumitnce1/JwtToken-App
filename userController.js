@@ -35,7 +35,7 @@ const signout = (req, res) => {
   if (sessions[userId]) {
     // Add the token to the blacklistToken
     const tokenToAdd = sessions[userId].token;
-    const expirationTime = Date.now() + 30 * 1000; // 30 seconds [1 * 60 * 1000 = 30min]
+    const expirationTime = Date.now() + 1 * 60 * 1000; // 30 * 1000=30 seconds [1 * 60 * 1000 = 30min]
     blacklistToken.push({ token: tokenToAdd, expiration: expirationTime });    
 
     // Remove the token from the session
@@ -51,7 +51,7 @@ const signout = (req, res) => {
         blacklistToken.splice(indexToRemove, 1);
         console.log(`Token expired and removed from the blacklist: ${tokenToAdd}`);
       }
-    }, 30 * 1000);
+    }, 30 * 60 * 1000);
 
     // Send a response to the client indicating that the token is no longer valid
     res.json({ message: "User signed out successfully. Token invalidated." });
