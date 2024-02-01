@@ -2,8 +2,9 @@ const jwt = require("jsonwebtoken");
 const { secretKey } = require("./config");
 const { blacklistToken } = require("./blacklist");
 
+// generating a token with a short expiration time
 function generateToken(userId) {
-  return jwt.sign({ userId }, secretKey, { expiresIn: "30m" });
+  return jwt.sign({ userId }, secretKey, { expiresIn: "1m" }); // 1 minute expiration
 }
 
 function verifyToken(req, res, next) {
@@ -26,7 +27,7 @@ function verifyToken(req, res, next) {
     req.userId = decoded.userId;
     next();
   } catch (error) {
-    console.error("Error verifying token:", error);
+    // console.error("Error verifying token:", error);
 
     if (error instanceof jwt.TokenExpiredError) {
       // Token is expired
