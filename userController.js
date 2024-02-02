@@ -21,6 +21,15 @@ const removeSession = (userIdToRemove) => {
 const signin = (req, res) => {
   const { userId } = req.body;
 
+  // Check if the userId exists in the userData
+  const user = userData.find((user) => user.userId === userId);
+
+  if (!user) {
+    // If user is not found, return an error response
+    res.status(404).json({ error: "User not found" });
+    return;
+  }
+
   // Check if the user already has an active session
   if (sessions[userId]) {
     // If a session already exists, return the existing token
