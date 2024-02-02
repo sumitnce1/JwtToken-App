@@ -32,8 +32,9 @@ const signin = (req, res) => {
 
   // Check if the user already has an active session
   if (sessions[userId]) {
-    // If a session already exists, return the existing token
-    res.json({ token: sessions[userId].token });
+    // If a session already exists, return an error response with the existing token
+    const existingToken = sessions[userId].token;
+    res.status(400).json({ error: "User already signed in", token: existingToken });
     return;
   }
 
