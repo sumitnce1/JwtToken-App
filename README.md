@@ -35,17 +35,6 @@ To clone this project, use the following command:
 
 2. The server will be running at http://localhost:4000.
 
-### Frontend
-
-1. Navigate to the `airliftfrontend` folder.
-
-2. Run the following commands:
-
-> - npm install
-> - npm start
-
-3. The frontend will be accessible at http://localhost:3000.
-
 ## Routes
 
 ### 1. Sign In
