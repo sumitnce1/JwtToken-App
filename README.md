@@ -46,6 +46,39 @@ To clone this project, use the following command:
 
 3. The frontend will be accessible at http://localhost:3000.
 
+## Routes
+
+### 1. Sign In
+
+- **Endpoint:** http://localhost:4000/signin
+- **Method:** POST
+- **Description:** Generates a JWT token upon successful authentication. If a session already exists for the user, it returns the existing token.
+
+### 2. Sign Out
+
+- **Endpoint:** http://localhost:4000/signout
+- **Method:** POST
+- **Description:** Invalidates the user's token, adds it to the blacklist, and removes it from the session.
+
+### 3. All Tokens
+
+- **Endpoint:** http://localhost:4000/allToken
+- **Method:** GET
+- **Description:** Retrieves information about all active user sessions.
+
+### 4. All Blacklist Tokens
+
+- **Endpoint:** http://localhost:4000/allBlacklistToken
+- **Method:** GET
+- **Description:** Retrieves information about all tokens in the blacklist.
+
+### 5. See User Data
+
+- **Endpoint:** http://localhost:4000/seeUserData/:userId
+- **Method:** GET
+- **Middleware:** verifyToken
+- **Description:** Retrieves user data based on the provided user ID, only accessible with a valid token.
+
 ## How to Contribute
 
 1. Create a new branch with your name:
