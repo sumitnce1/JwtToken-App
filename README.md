@@ -67,6 +67,7 @@ To clone this project, use the following command:
 - **Method:** GET
 - **Middleware:** verifyToken
 - **Description:** Retrieves user data based on the provided user ID, only accessible with a valid token.
+- **Add in Header:** `token: your_generated_token`
 
 ## How to Contribute
 
