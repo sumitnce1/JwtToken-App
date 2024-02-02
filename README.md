@@ -10,7 +10,6 @@ JwtToken-App is a Node.js-based application that showcases secure user authentic
 
 - Express.js
 - JSON Web Tokens (jsonwebtoken)
-- Cors
 
 ## How to Clone
 
@@ -91,4 +90,6 @@ To clone this project, use the following command:
 
 > - git push origin your_branch
 
-Feel free to contribute to the development of JwtToken-App by following these guidelines. Thank you for your collaboration!
+Feel free to contribute to the development of JwtToken-App by following these guidelines. 
+
+#### Thank you for your collaboration!
